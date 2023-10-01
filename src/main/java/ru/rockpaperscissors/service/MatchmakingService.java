@@ -2,7 +2,7 @@ package ru.rockpaperscissors.service;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.rockpaperscissors.model.Player;
-import ru.rockpaperscissors.model.RockPaperScissorsGame;
+import ru.rockpaperscissors.model.Game;
 
 import java.util.concurrent.*;
 
@@ -31,7 +31,7 @@ public class MatchmakingService implements AutoCloseable {
         Player secondPlayer = takePlayerFromQueue();
 
         try {
-            executorService.submit(new RockPaperScissorsGame(firstPlayer, secondPlayer)).get();
+            executorService.submit(new Game(firstPlayer, secondPlayer)).get();
             firstPlayer.close();
             secondPlayer.close();
         } catch (CompletionException | ExecutionException | InterruptedException exception) {

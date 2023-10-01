@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 @RequiredArgsConstructor
 @Slf4j
-public class RockPaperScissorsGame implements Callable<Void> {
+public class Game implements Callable<Void> {
     private final Player firstPlayer;
     private final Player secondPlayer;
     private boolean isOver = false;

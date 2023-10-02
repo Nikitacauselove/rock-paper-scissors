@@ -18,7 +18,7 @@ public class Player implements AutoCloseable {
     private boolean closed = false;
     private String name;
 
-    private final static Pattern NAME_PATTERN = Pattern.compile("^[a-z ,.'-]+$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[a-z ,.'-]+$", Pattern.CASE_INSENSITIVE);
 
     public Player(Socket socket) throws IOException {
         this.socket = socket;
@@ -47,7 +47,7 @@ public class Player implements AutoCloseable {
         }
     }
 
-    private String getMessage() throws IOException {
+    public String getMessage() throws IOException {
         String message = bufferedReader.readLine();
 
         if (message == null) {
@@ -90,16 +90,5 @@ public class Player implements AutoCloseable {
             return false;
         }
         return true;
-    }
-
-    public Shape makeHandShape(boolean clear) throws IOException {
-        sendMessage("Make your hand shape. Type rock, paper or scissors:", clear);
-        String playerShape = getMessage();
-
-        while (!Shape.isValid(playerShape)) {
-            sendMessage("Invalid hand shape. Type rock, paper or scissors:", true);
-            playerShape = getMessage();
-        }
-        return Shape.valueOf(playerShape.toUpperCase());
     }
 }

@@ -2,25 +2,25 @@ package ru.rockpaperscissors.model;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public enum Shape {
-    ROCK("rock"),
-    PAPER("paper"),
-    SCISSORS("scissors");
-
-    private final String name;
+    ROCK,
+    PAPER,
+    SCISSORS;
 
     @Override
     public String toString() {
-        return name;
+        return name().toLowerCase();
     }
 
-    public static boolean isValid(String string) {
-        for (Shape shape : Shape.values()) {
-            if (shape.name.equals(string)) {
-                return true;
+    public static Optional<Shape> from(String string) {
+        for (Shape shape : values()) {
+            if (shape.name().equalsIgnoreCase(string)) {
+                return Optional.of(shape);
             }
         }
-        return false;
+        return Optional.empty();
     }
 }

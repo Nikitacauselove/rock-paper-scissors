@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -23,10 +24,15 @@ public class Game implements Callable<Void> {
     }
 
     private Shape getShape(Player player) throws CompletionException {
-        boolean clear = !isTie;
-
         try {
-            return player.makeHandShape(clear);
+            player.sendMessage("Make your hand shape. Type rock, paper or scissors:", !isTie);
+            Optional<Shape> playerShape = Shape.from(player.getMessage());
+
+            while (playerShape.isEmpty()) {
+                player.sendMessage("Invalid hand shape. Type rock, paper or scissors:", true);
+                playerShape = Shape.from(player.getMessage());
+            }
+            return playerShape.get();
         } catch (IOException exception) {
             player.close();
             throw new CompletionException(exception);

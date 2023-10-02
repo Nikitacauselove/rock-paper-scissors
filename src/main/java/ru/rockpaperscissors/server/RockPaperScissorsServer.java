@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class RockPaperScissorsServer {
     public static void run(int port) {
-        try (ServerSocket serverSocket = new ServerSocket(port); MatchmakingService matchmakingService = new MatchmakingService()) {
+        try (MatchmakingService matchmakingService = new MatchmakingService(); ServerSocket serverSocket = new ServerSocket(port)) {
             log.info("Server started on port: {}", port);
 
             while (!serverSocket.isClosed()) {

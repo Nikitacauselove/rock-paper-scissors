@@ -47,16 +47,7 @@ public class Player implements AutoCloseable {
         }
     }
 
-    public String getMessage() throws IOException {
-        String message = bufferedReader.readLine();
-
-        if (message == null) {
-            throw new IOException();
-        }
-        return message;
-    }
-
-    public void setName() throws IOException {
+    public void chooseName() throws IOException {
         sendMessage("Enter your name:", true);
         String name = getMessage();
 
@@ -65,13 +56,6 @@ public class Player implements AutoCloseable {
             name = getMessage();
         }
         this.name = name;
-    }
-
-    public void sendMessage(String message, boolean clear) {
-        if (clear) {
-            printWriter.print("\u001B[2J");
-        }
-        printWriter.println(message);
     }
 
     public boolean isConnected() {
@@ -90,5 +74,21 @@ public class Player implements AutoCloseable {
             return false;
         }
         return true;
+    }
+
+    public String getMessage() throws IOException {
+        String message = bufferedReader.readLine();
+
+        if (message == null) {
+            throw new IOException();
+        }
+        return message;
+    }
+
+    public void sendMessage(String message, boolean clear) {
+        if (clear) {
+            printWriter.print("\u001B[2J");
+        }
+        printWriter.println(message);
     }
 }

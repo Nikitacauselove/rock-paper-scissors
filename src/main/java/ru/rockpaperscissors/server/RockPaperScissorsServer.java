@@ -21,7 +21,7 @@ public class RockPaperScissorsServer {
 
                 CompletableFuture.runAsync(() -> {
                     try {
-                        player.setName();
+                        player.chooseName();
                         matchmakingService.addPlayer(player, false);
                     } catch (IOException exception) {
                         player.close();

@@ -18,12 +18,9 @@ public class Game implements Callable<Void> {
     private boolean isOver = false;
     private boolean isTie = false;
 
-    private void broadcastOutcome(String message, Player winner, Player looser) {
-        winner.sendMessage(String.format("%s You win!", message), false);
-        looser.sendMessage(String.format("%s You lose!", message), false);
-    }
+    private static final String CHOSE_FORMAT = "You chose %s, your opponent chose %s.";
 
-    private Shape getShape(Player player) throws CompletionException {
+    private Shape getPlayerShape(Player player) throws CompletionException {
         try {
             player.sendMessage("Make your hand shape. Type rock, paper or scissors:", !isTie);
             Optional<Shape> playerShape = Shape.from(player.getMessage());
@@ -40,35 +37,17 @@ public class Game implements Callable<Void> {
     }
 
     private void start(Shape firstPlayerShape, Shape secondPlayerShape) {
-        firstPlayer.sendMessage(String.format("You chose %s, your opponent chose %s.", firstPlayerShape, secondPlayerShape), true);
-        secondPlayer.sendMessage(String.format("You chose %s, your opponent chose %s.", secondPlayerShape, firstPlayerShape), true);
+        firstPlayer.sendMessage(String.format(CHOSE_FORMAT, firstPlayerShape, secondPlayerShape), true);
+        secondPlayer.sendMessage(String.format(CHOSE_FORMAT, secondPlayerShape, firstPlayerShape), true);
 
         if (firstPlayerShape == secondPlayerShape) {
-            firstPlayer.sendMessage(String.format("Both players selected %s. It's a tie!", firstPlayerShape), false);
-            secondPlayer.sendMessage(String.format("Both players selected %s. It's a tie!", secondPlayerShape), false);
             isTie = true;
-        } else if (firstPlayerShape == Shape.ROCK) {
-            if (secondPlayerShape == Shape.SCISSORS) {
-                broadcastOutcome("Rock smashes scissors!", firstPlayer, secondPlayer);
-            } else {
-                broadcastOutcome("Paper covers rock!", secondPlayer, firstPlayer);
-            }
-            isOver = true;
-        } else if (firstPlayerShape == Shape.PAPER) {
-            if (secondPlayerShape == Shape.ROCK) {
-                broadcastOutcome("Paper covers rock!", firstPlayer, secondPlayer);
-            } else {
-                broadcastOutcome("Scissors cuts paper!", secondPlayer, firstPlayer);
-            }
-            isOver = true;
-        } else if (firstPlayerShape == Shape.SCISSORS) {
-            if (secondPlayerShape == Shape.PAPER) {
-                broadcastOutcome("Scissors cuts paper!", firstPlayer, secondPlayer);
-            } else {
-                broadcastOutcome("Rock smashes scissors!", secondPlayer, firstPlayer);
-            }
+        } else {
             isOver = true;
         }
+
+        firstPlayer.sendMessage(firstPlayerShape.getOutcomeMessage(secondPlayerShape), isTie & !isOver);
+        secondPlayer.sendMessage(secondPlayerShape.getOutcomeMessage(firstPlayerShape), isTie & !isOver);
     }
 
     @Override
@@ -76,8 +55,8 @@ public class Game implements Callable<Void> {
         log.info("Game between {} and {} has started", firstPlayer.getName(), secondPlayer.getName());
 
         while (!isOver) {
-            CompletableFuture<Shape> firstPlayerShape = CompletableFuture.supplyAsync(() -> getShape(firstPlayer));
-            CompletableFuture<Shape> secondPlayerShape = CompletableFuture.supplyAsync(() -> getShape(secondPlayer));
+            CompletableFuture<Shape> firstPlayerShape = CompletableFuture.supplyAsync(() -> getPlayerShape(firstPlayer));
+            CompletableFuture<Shape> secondPlayerShape = CompletableFuture.supplyAsync(() -> getPlayerShape(secondPlayer));
 
             start(firstPlayerShape.get(), secondPlayerShape.get());
         }

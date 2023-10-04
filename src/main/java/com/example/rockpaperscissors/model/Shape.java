@@ -1,4 +1,4 @@
-package ru.rockpaperscissors.model;
+package com.example.rockpaperscissors.model;
 
 import lombok.RequiredArgsConstructor;
 

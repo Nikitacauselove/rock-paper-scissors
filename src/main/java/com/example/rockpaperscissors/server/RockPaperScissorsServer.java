@@ -1,8 +1,8 @@
-package ru.rockpaperscissors.server;
+package com.example.rockpaperscissors.server;
 
+import com.example.rockpaperscissors.model.Player;
+import com.example.rockpaperscissors.service.MatchmakingService;
 import lombok.extern.slf4j.Slf4j;
-import ru.rockpaperscissors.model.Player;
-import ru.rockpaperscissors.service.MatchmakingService;
 
 import java.io.IOException;
 import java.net.ServerSocket;

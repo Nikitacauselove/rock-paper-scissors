@@ -1,6 +1,6 @@
-package ru.rockpaperscissors;
+package com.example.rockpaperscissors;
 
-import ru.rockpaperscissors.server.RockPaperScissorsServer;
+import com.example.rockpaperscissors.server.RockPaperScissorsServer;
 
 public class RockPaperScissorsApp {
     public static void main(String[] args) {

@@ -1,8 +1,8 @@
-package ru.rockpaperscissors.service;
+package com.example.rockpaperscissors.service;
 
+import com.example.rockpaperscissors.model.Game;
+import com.example.rockpaperscissors.model.Player;
 import lombok.extern.slf4j.Slf4j;
-import ru.rockpaperscissors.model.Player;
-import ru.rockpaperscissors.model.Game;
 
 import java.util.concurrent.*;
 
